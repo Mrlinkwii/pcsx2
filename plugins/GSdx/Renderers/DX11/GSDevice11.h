@@ -316,7 +316,8 @@ public:
 				uint32 wa:1;
 				// Alpha blending
 				uint32 blend_index:7;
-				uint32 abe:1;
+				uint32 blend_factor:8;
+				uint32 alpha_blend:1;
 				uint32 accu_blend:1;
 			};
 
@@ -329,7 +330,7 @@ public:
 			uint32 key;
 		};
 
-		operator uint32() {return key & 0x1fff;}
+		operator uint32() {return key & 0x1fffff;}
 
 		OMBlendSelector() : key(0) {}
 	};
@@ -556,7 +557,7 @@ public:
 	void SetupVS(VSSelector sel, const VSConstantBuffer* cb);
 	void SetupGS(GSSelector sel, const GSConstantBuffer* cb);
 	void SetupPS(PSSelector sel, const PSConstantBuffer* cb, PSSamplerSelector ssel);
-	void SetupOM(OMDepthStencilSelector dssel, OMBlendSelector bsel, uint8 afix);
+	void SetupOM(OMDepthStencilSelector dssel, OMBlendSelector bsel);
 
 	ID3D11Device* operator->() {return m_dev;}
 	operator ID3D11Device*() {return m_dev;}

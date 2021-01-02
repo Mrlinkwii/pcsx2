@@ -458,7 +458,7 @@ void GSRendererDX11::EmulateBlending()
 	if (!(PRIM->ABE || (PRIM->AA1 && m_vt.m_primclass == GS_LINE_CLASS)))
 		return;
 
-	m_om_bsel.abe = 1;
+	m_om_bsel.alpha_blend = 1;
 
 	if (m_env.PABE.PABE)
 	{
@@ -467,7 +467,7 @@ void GSRendererDX11::EmulateBlending()
 			// this works because with PABE alpha blending is on when alpha >= 0x80, but since the pixel shader
 			// cannot output anything over 0x80 (== 1.0) blending with 0x80 or turning it off gives the same result
 
-			m_om_bsel.abe = 0;
+			m_om_bsel.alpha_blend = 0;
 		}
 
 		// Breath of Fire Dragon Quarter, Strawberry Shortcake, Super Robot Wars.
@@ -543,7 +543,7 @@ void GSRendererDX11::EmulateBlending()
 		else
 		{
 			// Disable HW blending
-			m_om_bsel.abe = 0;
+			m_om_bsel.alpha_blend = 0;
 
 			// Only BLEND_NO_REC should hit this code path for now
 			ASSERT(blend_non_recursive);
@@ -556,9 +556,17 @@ void GSRendererDX11::EmulateBlending()
 	else
 	{
 		m_ps_sel.clr1 = !!(blend_flag & BLEND_C_CLR);
-		// FIXME: When doing HW blending with a 24 bit frambuffer and ALPHA.C == 1 (Ad) it should be handled
-		// as if Ad = 1.0f. As with OGL side it is probably best to set m_om_bsel.c = 1 (Af) and use
-		// AFIX = 0x80 (Af = 1.0f).
+		if (m_ps_sel.dfmt == 1 && ALPHA.C == 1)
+		{
+			// 24 bits doesn't have an alpha channel so use 1.0f fix factor as equivalent
+			// hacked_blend_index +3 <=> +1 on C
+			m_om_bsel.blend_index += 3;
+			m_om_bsel.blend_factor = 128;
+		}
+		else
+		{
+			m_om_bsel.blend_factor = ALPHA.FIX;
+		}
 	}
 }
 
@@ -1060,8 +1068,7 @@ void GSRendererDX11::DrawPrims(GSTexture* rt, GSTexture* ds, GSTextureCache::Sou
 
 	SetupIA(sx, sy);
 
-	uint8 afix = m_context->ALPHA.FIX;
-	dev->SetupOM(m_om_dssel, m_om_bsel, afix);
+	dev->SetupOM(m_om_dssel, m_om_bsel);
 	dev->SetupVS(m_vs_sel, &vs_cb);
 	dev->SetupGS(m_gs_sel, &gs_cb);
 	dev->SetupPS(m_ps_sel, &ps_cb, m_ps_ssel);
@@ -1131,7 +1138,7 @@ void GSRendererDX11::DrawPrims(GSTexture* rt, GSTexture* ds, GSTextureCache::Sou
 			m_om_bsel.wb = b;
 			m_om_bsel.wa = a;
 
-			dev->SetupOM(m_om_dssel, m_om_bsel, afix);
+			dev->SetupOM(m_om_dssel, m_om_bsel);
 
 			dev->DrawIndexedPrimitive();
 		}
