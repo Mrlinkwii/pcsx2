@@ -250,6 +250,8 @@ protected:
 	void Menu_Website(wxCommandEvent& event);
 	void Menu_Github(wxCommandEvent& event);
 	void Menu_Wiki(wxCommandEvent& event);
+	void Menu_Docs(wxCommandEvent& event);
+
 	void Menu_ShowAboutBox(wxCommandEvent& event);
 
 	void Menu_Capture_Video_Record_Click(wxCommandEvent& event);

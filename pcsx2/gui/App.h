@@ -163,6 +163,7 @@ enum MenuIdentifiers
 	MenuId_Help_Forums,
 	MenuId_Help_Website,
 	MenuId_Help_Wiki,
+	MenuId_Help_Offline_Docs,
 	MenuId_Help_Github,
 
 	// Plugin Sections
