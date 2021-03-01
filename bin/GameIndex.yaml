@@ -6349,6 +6349,8 @@ SLES-50134:
 SLES-50136:
   name: "Robot Warlords"
   region: "PAL-E"
+  memcardFilters:
+  - "BESLESP-50136robot"  #Game dose not use the serial in the folder name 
 SLES-50137:
   name: "Robot Warlords"
   region: "PAL-F"
