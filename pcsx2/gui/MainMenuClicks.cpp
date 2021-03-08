@@ -845,7 +845,7 @@ void MainEmuFrame::Menu_Wiki(wxCommandEvent& event)
 
 void MainEmuFrame::Menu_Docs(wxCommandEvent& event)
 {
-	wxLaunchDefaultBrowser("file:/docs/PCSX2_FAQ.pdf");
+	wxLaunchDefaultBrowser("file:./docs/PCSX2_FAQ.pdf");
 }
 
 void MainEmuFrame::Menu_ShowAboutBox(wxCommandEvent& event)
