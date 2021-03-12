@@ -905,6 +905,37 @@ void MainEmuFrame::Menu_ShowAboutBox(wxCommandEvent& event)
 {
 	AppOpenDialog<AboutBoxDialog>(this);
 }
+void MainEmuFrame::Menu_Capture_Audio(wxCommandEvent& event)
+{
+
+	SPU2setupRecording();
+		m_submenuAudioCapture.Enable(MenuId_Capture_Audio, true);
+		m_submenuAudioCapture.Enable(MenuId_Capture_Audio_Stop, false);
+
+		id ()
+}
+
+void MainEmuFrame::Menu_Capture_Audio_ToggleCapture_Click(wxCommandEvent& event)
+{
+m_capturingAudio = !m_capturingAudio;
+	if (m_capturingAudio)
+	{
+			std::string filename;
+		if (!g_Conf->AudioCapture.EnableAudio || SPU2setupRecording(&filename))
+	 		{
+				m_submenuAudioCapture.Enable(MenuId_Capture_Audio, false);
+					m_submenuAudioCapture.Enable(MenuId_Capture_Audio_Stop, true);
+			}
+				else
+				{
+					GSendRecording();
+					m_capturingAudio = false;
+				}
+			}
+		}
+		else
+			m_capturingVideo = false;
+}
 
 void MainEmuFrame::Menu_Capture_Video_ToggleCapture_Click(wxCommandEvent& event)
 {

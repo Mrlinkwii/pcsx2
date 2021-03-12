@@ -190,6 +190,8 @@ enum MenuIdentifiers
 	MenuId_Config_ResetAll,
 
 	// Capture Subsection
+	MenuId_Capture_Audio,
+	MenuId_Capture_Audio_Stop,
 	MenuId_Capture_Video,
 	MenuId_Capture_Video_Record,
 	MenuId_Capture_Video_Stop,

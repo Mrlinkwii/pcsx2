@@ -304,7 +304,9 @@ void MainEmuFrame::ConnectMenus()
 	Bind(wxEVT_MENU, &MainEmuFrame::Menu_Debug_Open_Click, this, MenuId_Debug_Open);
 
 	// Capture
-	Bind(wxEVT_MENU, &MainEmuFrame::Menu_Capture_Video_ToggleCapture_Click, this, MenuId_Capture_Video_Record);
+	Bind(wxEVT_MENU, &MainEmuFrame::Menu_Capture_Audio, this, MenuId_Capture_Audio);
+	Bind(wxEVT_MENU, &MainEmuFrame::Menu_Capture_Audio_ToggleCapture_Click, this, MenuId_Capture_Audio_Stop);
+    Bind(wxEVT_MENU, &MainEmuFrame::Menu_Capture_Video_ToggleCapture_Click, this, MenuId_Capture_Video_Record);
 	Bind(wxEVT_MENU, &MainEmuFrame::Menu_Capture_Video_ToggleCapture_Click, this, MenuId_Capture_Video_Stop);
 	Bind(wxEVT_MENU, &MainEmuFrame::Menu_Capture_Video_IncludeAudio_Click, this, MenuId_Capture_Video_IncludeAudio);
 	Bind(wxEVT_MENU, &MainEmuFrame::Menu_Capture_Screenshot_Screenshot_Click, this, MenuId_Capture_Screenshot_Screenshot);
@@ -506,6 +508,12 @@ void MainEmuFrame::CreateWindowsMenu()
 
 void MainEmuFrame::CreateCaptureMenu()
 {
+	m_menuCapture.Append(MenuId_Capture_Audio, _("Audio"), &m_submenuAudioCapture);
+	wxMenuItem* sysAudioCaptureItem = m_submenuAudioCapture.Append(MenuId_Capture_Audio, _("Start Audio Capture"));
+	sysAudioCaptureItem->Enable(true);
+
+	sysAudioCaptureItem = m_submenuAudioCapture.Append(MenuId_Capture_Audio_Stop, _("Stop Audio Capture"));
+	sysAudioCaptureItem->Enable(false);
 	m_menuCapture.Append(MenuId_Capture_Video, _("Video"), &m_submenuVideoCapture);
 	// Implement custom hotkeys (F12) with translatable string intact + not blank in GUI.
 	wxMenuItem* sysVideoCaptureItem = m_submenuVideoCapture.Append(MenuId_Capture_Video_Record, _("Start Video Capture"));
@@ -577,6 +585,7 @@ MainEmuFrame::MainEmuFrame(wxWindow* parent, const wxString& title)
 	, m_menuWindow(*new wxMenu())
 	, m_menuCapture(*new wxMenu())
 	, m_submenuVideoCapture(*new wxMenu())
+	, m_submenuAudioCapture(*new wxMenu())
 	, m_submenuIPC(*new wxMenu())
 	, m_submenuScreenshot(*new wxMenu())
 #ifndef DISABLE_RECORDING

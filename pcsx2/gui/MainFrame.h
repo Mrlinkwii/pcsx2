@@ -117,6 +117,7 @@ protected:
 
 	wxMenu& m_menuCapture;
 	wxMenu& m_submenuVideoCapture;
+	wxMenu& m_submenuAudioCapture;
 	wxMenu& m_submenuIPC;
 	wxMenu& m_submenuScreenshot;
 
@@ -138,7 +139,9 @@ protected:
 
 	PerPluginMenuInfo m_PluginMenuPacks[PluginId_Count];
 
+	bool m_capturingAudio;
 	bool m_capturingVideo;
+
 
 	virtual void DispatchEvent(const PluginEventType& plugin_evt);
 	virtual void DispatchEvent(const CoreThreadStatus& status);
@@ -257,6 +260,8 @@ protected:
 	void Menu_Wiki(wxCommandEvent& event);
 	void Menu_ShowAboutBox(wxCommandEvent& event);
 
+     void Menu_Capture_Audio(wxCommandEvent& event);
+     void Menu_Capture_Audio_ToggleCapture_Click(wxCommandEvent& event);
 	void Menu_Capture_Video_ToggleCapture_Click(wxCommandEvent& event);
 	void Menu_Capture_Video_IncludeAudio_Click(wxCommandEvent& event);
 	void Menu_Capture_Screenshot_Screenshot_Click(wxCommandEvent& event);
