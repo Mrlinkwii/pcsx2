@@ -758,6 +758,8 @@ void MainEmuFrame::Menu_SuspendResume_Click(wxCommandEvent& event)
 
 void MainEmuFrame::Menu_SysShutdown_Click(wxCommandEvent& event)
 {
+	if (m_capturingVideo)
+		VideoCaptureToggle();
 	UI_DisableSysShutdown();
 	Console.SetTitle("PCSX2 Program Log");
 	CoreThread.Reset();
@@ -854,27 +856,23 @@ void MainEmuFrame::Menu_ShowAboutBox(wxCommandEvent& event)
 	AppOpenDialog<AboutBoxDialog>(this);
 }
 
-void MainEmuFrame::Menu_Capture_Video_Record_Click(wxCommandEvent& event)
+void MainEmuFrame::Menu_Capture_Video_ToggleCapture_Click(wxCommandEvent& event)
 {
 	ScopedCoreThreadPause paused_core;
 	paused_core.AllowResume();
-
-	m_capturingVideo = true;
-	VideoCaptureUpdate();
+	VideoCaptureToggle();
 }
 
-void MainEmuFrame::Menu_Capture_Video_Stop_Click(wxCommandEvent& event)
+void MainEmuFrame::Menu_Capture_Video_IncludeAudio_Click(wxCommandEvent& event)
 {
-	ScopedCoreThreadPause paused_core;
-	paused_core.AllowResume();
-
-	m_capturingVideo = false;
-	VideoCaptureUpdate();
+	g_Conf->AudioCapture.EnableAudio = GetMenuBar()->IsChecked(MenuId_Capture_Video_IncludeAudio);
+	ApplySettings();
 }
 
-void MainEmuFrame::VideoCaptureUpdate()
+void MainEmuFrame::VideoCaptureToggle()
 {
 	GetMTGS().WaitGS(); // make sure GS is in sync with the audio stream when we start.
+	m_capturingVideo = !m_capturingVideo;
 	if (m_capturingVideo)
 	{
 		// start recording
@@ -882,53 +880,56 @@ void MainEmuFrame::VideoCaptureUpdate()
 		// make the recording setup dialog[s] pseudo-modal also for the main PCSX2 window
 		// (the GSdx dialog is already properly modal for the GS window)
 		bool needsMainFrameEnable = false;
-		if (GetMainFramePtr() && GetMainFramePtr()->IsEnabled())
+		if (IsEnabled())
 		{
 			needsMainFrameEnable = true;
-			GetMainFramePtr()->Disable();
+			Disable();
 		}
 
 		if (GSsetupRecording)
 		{
 			// GSsetupRecording can be aborted/canceled by the user. Don't go on to record the audio if that happens
-			std::wstring* filename = nullptr;
-			if (filename = GSsetupRecording(m_capturingVideo))
+			std::string filename;
+			if (GSsetupRecording(filename))
 			{
-				SPU2setupRecording(m_capturingVideo, filename);
-				delete filename;
+				if (!g_Conf->AudioCapture.EnableAudio || SPU2setupRecording(&filename))
+				{
+					m_submenuVideoCapture.Enable(MenuId_Capture_Video_Record, false);
+					m_submenuVideoCapture.Enable(MenuId_Capture_Video_Stop, true);
+					m_submenuVideoCapture.Enable(MenuId_Capture_Video_IncludeAudio, false);
+				}
+				else
+				{
+					GSendRecording();
+					m_capturingVideo = false;
+				}
 			}
-			else
-			{
-				// recording dialog canceled by the user. align our state
+			else // recording dialog canceled by the user. align our state
 				m_capturingVideo = false;
-			}
+		}
+		// the GS doesn't support recording
+		else if (g_Conf->AudioCapture.EnableAudio && SPU2setupRecording(nullptr))
+		{
+			m_submenuVideoCapture.Enable(MenuId_Capture_Video_Record, false);
+			m_submenuVideoCapture.Enable(MenuId_Capture_Video_Stop, true);
+			m_submenuVideoCapture.Enable(MenuId_Capture_Video_IncludeAudio, false);
 		}
 		else
-		{
-			// the GS doesn't support recording.
-			SPU2setupRecording(m_capturingVideo, nullptr);
-		}
-
-		if (GetMainFramePtr() && needsMainFrameEnable)
-			GetMainFramePtr()->Enable();
+			m_capturingVideo = false;
+		
+		if (needsMainFrameEnable)
+			Enable();
 	}
 	else
 	{
 		// stop recording
-		if (GSsetupRecording)
-			GSsetupRecording(m_capturingVideo);
-		SPU2setupRecording(m_capturingVideo, nullptr);
-	}
-
-	if (m_capturingVideo)
-	{
-		m_submenuVideoCapture.FindItem(MenuId_Capture_Video_Record)->Enable(false);
-		m_submenuVideoCapture.FindItem(MenuId_Capture_Video_Stop)->Enable(true);
-	}
-	else
-	{
-		m_submenuVideoCapture.FindItem(MenuId_Capture_Video_Record)->Enable(true);
-		m_submenuVideoCapture.FindItem(MenuId_Capture_Video_Stop)->Enable(false);
+		if (GSendRecording)
+			GSendRecording();
+		if (g_Conf->AudioCapture.EnableAudio)
+			SPU2endRecording();
+		m_submenuVideoCapture.Enable(MenuId_Capture_Video_Record, true);
+		m_submenuVideoCapture.Enable(MenuId_Capture_Video_Stop, false);
+		m_submenuVideoCapture.Enable(MenuId_Capture_Video_IncludeAudio, true);
 	}
 }
 
