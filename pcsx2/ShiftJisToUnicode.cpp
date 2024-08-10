@@ -816,16 +816,6 @@ wchar_t ShiftJIS_ConvertChar(const u8* input, int& used)
 	}
 	else
 	{
-		//if( !pxAssert( NumBytes[FirstByte] != 0 ) )
-		if( NumBytes[FirstByte] == 0 )
-		{
-			// FIXME : Hackfixed a null pointer in FFX (during opening scenes).  It tries to
-			// print an 0xfc/0x0a combo, followed by a NULL.  Other IOP prints seem to have valid
-			// Shift-JIS encodings.  not sure what's going on yet, so this needs reviewed sometime
-			//   --air
-			used = 1; return (u16)FirstByte;
-		}
-
 		used = 2;
 		return TwoBytes[FirstByte][input[1]];
 	}
