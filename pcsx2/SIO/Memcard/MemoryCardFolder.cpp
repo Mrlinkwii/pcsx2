@@ -275,7 +275,7 @@ void FolderMemoryCard::LoadMemoryCardData(const u32 sizeInClusters, const bool e
 
 
 #ifdef DEBUG_WRITE_FOLDER_CARD_IN_MEMORY_TO_FILE_ON_CHANGE
-		WriteToFile(m_folderName.GetFullPath().RemoveLast() + L"-debug_" + wxDateTime::Now().Format(L"%Y-%m-%d-%H-%M-%S") + L"_load.ps2");
+		WriteToFile(m_folderName.GetFullPath().RemoveLast() + L"-debug_" + file_clock::Now().Format(L"%Y-%m-%d-%H-%M-%S") + L"_load.ps2");
 #endif
 	}
 }
@@ -1080,7 +1080,7 @@ void FolderMemoryCard::Flush()
 	}
 
 #ifdef DEBUG_WRITE_FOLDER_CARD_IN_MEMORY_TO_FILE_ON_CHANGE
-	WriteToFile(m_folderName.GetFullPath().RemoveLast() + L"-debug_" + wxDateTime::Now().Format(L"%Y-%m-%d-%H-%M-%S") + L"_pre-flush.ps2");
+	WriteToFile(m_folderName.GetFullPath().RemoveLast() + L"-debug_" + file_clock::Now().Format(L"%Y-%m-%d-%H-%M-%S") + L"_pre-flush.ps2");
 #endif
 
 	Console.WriteLn("FolderMcd: Writing data for slot %u to file system...", m_slot);
@@ -1154,7 +1154,7 @@ void FolderMemoryCard::Flush()
 	Console.WriteLn("FolderMcd: Done! Took %.2f ms.", timeFlushStart.GetTimeMilliseconds());
 
 #ifdef DEBUG_WRITE_FOLDER_CARD_IN_MEMORY_TO_FILE_ON_CHANGE
-	WriteToFile(m_folderName.GetFullPath().RemoveLast() + L"-debug_" + wxDateTime::Now().Format(L"%Y-%m-%d-%H-%M-%S") + L"_post-flush.ps2");
+	WriteToFile(m_folderName.GetFullPath().RemoveLast() + L"-debug_" + file_clock::Now().Format(L"%Y-%m-%d-%H-%M-%S") + L"_post-flush.ps2");
 #endif
 }
 
