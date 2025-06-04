@@ -50136,8 +50136,6 @@ SLPM-66712:
   name-en: "Rozen Maiden - Gebetgarten [Standard Edition]"
   region: "NTSC-J"
   compat: 5
-  gsHWFixes:
-    beforeDraw: "OI_RozenMaidenGebetGarden"
 SLPM-66713:
   name: "タイトーメモリーズⅡ 下巻"
   name-sort: "たいとーめもりーず2 02 げかん"
@@ -74660,15 +74658,11 @@ TCPS-10181:
   name-sort: "ろーぜんめいでん げべーとがるでん [つうじょうばん]"
   name-en: "Rozen Maiden - Gebetgarten [Standard Edition]"
   region: "NTSC-J"
-  gsHWFixes:
-    beforeDraw: "OI_RozenMaidenGebetGarden"
 TCPS-10182:
   name: "ローゼンメイデン ゲベートガルデン [限定版]"
   name-sort: "ろーぜんめいでん げべーとがるでん [げんていばん]"
   name-en: "Rozen Maiden - Gebetgarten [Limited Edition]"
   region: "NTSC-J"
-  gsHWFixes:
-    beforeDraw: "OI_RozenMaidenGebetGarden"
 TCPS-10183:
   name: "タイトーメモリーズⅡ 下巻"
   name-sort: "たいとーめもりーず2 - 02 げかん"

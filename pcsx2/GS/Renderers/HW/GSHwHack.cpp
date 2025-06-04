@@ -913,58 +913,6 @@ bool GSHwHack::OI_DBZBTGames(GSRendererHW& r, GSTexture* rt, GSTexture* ds, GSTe
 	return false; // Skip current draw
 }
 
-bool GSHwHack::OI_RozenMaidenGebetGarden(GSRendererHW& r, GSTexture* rt, GSTexture* ds, GSTextureCache::Source* t)
-{
-	if (!RPRIM->TME)
-	{
-		const u32 FBP = RFRAME.Block();
-		const u32 ZBP = RZBUF.Block();
-
-		if (FBP == 0x008c0 && ZBP == 0x01a40)
-		{
-			//  frame buffer clear, atst = fail, afail = write z only, z buffer points to frame buffer
-
-			GIFRegTEX0 TEX0 = {};
-
-			TEX0.TBP0 = ZBP;
-			TEX0.TBW = RFRAME.FBW;
-			TEX0.PSM = RFRAME.PSM;
-
-			if (GSTextureCache::Target* tmp_rt = g_texture_cache->LookupTarget(TEX0, r.GetTargetSize(), r.GetTextureScaleFactor(), GSTextureCache::RenderTarget))
-			{
-				GL_INS("OI_RozenMaidenGebetGarden FB clear");
-				g_gs_device->ClearRenderTarget(tmp_rt->m_texture, 0);
-				tmp_rt->UpdateDrawn(tmp_rt->m_valid);
-				tmp_rt->m_alpha_max = 0;
-				tmp_rt->m_alpha_min = 0;
-				tmp_rt->m_alpha_range = false;
-			}
-
-			return false;
-		}
-		else if (FBP == 0x00000 && RZBUF.Block() == 0x01180)
-		{
-			// z buffer clear, frame buffer now points to the z buffer (how can they be so clever?)
-
-			GIFRegTEX0 TEX0 = {};
-
-			TEX0.TBP0 = FBP;
-			TEX0.TBW = RFRAME.FBW;
-			TEX0.PSM = RZBUF.PSM;
-
-			if (GSTextureCache::Target* tmp_ds = g_texture_cache->LookupTarget(TEX0, r.GetTargetSize(), r.GetTextureScaleFactor(), GSTextureCache::DepthStencil))
-			{
-				GL_INS("OI_RozenMaidenGebetGarden ZB clear");
-				g_gs_device->ClearDepth(tmp_ds->m_texture, 0.0f);
-			}
-
-			return false;
-		}
-	}
-
-	return true;
-}
-
 bool GSHwHack::OI_SonicUnleashed(GSRendererHW& r, GSTexture* rt, GSTexture* ds, GSTextureCache::Source* t)
 {
 	// Rendering pattern is:
@@ -1345,7 +1293,6 @@ const GSHwHack::Entry<GSRendererHW::GSC_Ptr> GSHwHack::s_get_skip_count_function
 const GSHwHack::Entry<GSRendererHW::OI_Ptr> GSHwHack::s_before_draw_functions[] = {
 	CRC_F(OI_PointListPalette),
 	CRC_F(OI_DBZBTGames),
-	CRC_F(OI_RozenMaidenGebetGarden),
 	CRC_F(OI_SonicUnleashed),
 	CRC_F(OI_ArTonelico2),
 	CRC_F(OI_BurnoutGames),
