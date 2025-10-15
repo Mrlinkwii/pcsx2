@@ -1053,19 +1053,6 @@ alignas(__pagealignsize) u8 eeHw[Ps2MemSize::Hardware];
 void memBindConditionalHandlers()
 {
 	if( hw_by_page[0xf] == 0xFFFFFFFF ) return;
-
-	if (EmuConfig.Speedhacks.IntcStat)
-	{
-		vtlbMemR16FP* page0F16(hwRead16_page_0F_INTC_HACK);
-		vtlbMemR32FP* page0F32(hwRead32_page_0F_INTC_HACK);
-		//vtlbMemR64FP* page0F64(hwRead64_generic_INTC_HACK);
-
-		vtlb_ReassignHandler( hw_by_page[0xf],
-			hwRead8<0x0f>,	page0F16,			page0F32,			hwRead64<0x0f>,		hwRead128<0x0f>,
-			hwWrite8<0x0f>,	hwWrite16<0x0f>,	hwWrite32<0x0f>,	hwWrite64<0x0f>,	hwWrite128<0x0f>
-		);
-	}
-	else
 	{
 		vtlbMemR16FP* page0F16(hwRead16<0x0f>);
 		vtlbMemR32FP* page0F32(hwRead32<0x0f>);

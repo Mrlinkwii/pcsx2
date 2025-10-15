@@ -499,7 +499,7 @@ int vtlb_DynGenReadNonQuad_Const(u32 bits, bool sign, bool xmm, u32 addr_const, 
 		}
 
 		// Shortcut for the INTC_STAT register, which many games like to spin on heavily.
-		if ((bits == 32) && !EmuConfig.Speedhacks.IntcStat && (paddr == INTC_STAT))
+		if ((bits == 32) && (paddr == INTC_STAT))
 		{
 			x86_dest_reg = dest_reg_alloc ? dest_reg_alloc() : (_freeX86reg(eax), eax.GetId());
 			if (!xmm)
