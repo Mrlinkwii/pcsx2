@@ -381,7 +381,6 @@ Pcsx2Config::SpeedhackOptions::SpeedhackOptions()
 
 	// Set recommended speedhacks to enabled by default. They'll still be off globally on resets.
 	WaitLoop = true;
-	IntcStat = true;
 	vuFlagHack = true;
 	vu1Instant = true;
 }
@@ -402,7 +401,6 @@ void Pcsx2Config::SpeedhackOptions::LoadSave(SettingsWrapper& wrap)
 	SettingsWrapBitfield(EECycleRate);
 	SettingsWrapBitfield(EECycleSkip);
 	SettingsWrapBitBool(fastCDVD);
-	SettingsWrapBitBool(IntcStat);
 	SettingsWrapBitBool(WaitLoop);
 	SettingsWrapBitBool(vuFlagHack);
 	SettingsWrapBitBool(vuThread);
