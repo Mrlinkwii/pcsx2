@@ -3351,11 +3351,7 @@ void VMManager::WarnAboutUnsafeSettings()
 		append(ICON_FA_CIRCLE_EXCLAMATION,
 			TRANSLATE_SV("VMManager", "EE Wait Loop Detection is not enabled, this may reduce performance."));
 	}
-	if (!EmuConfig.Speedhacks.IntcStat)
-	{
-		append(ICON_FA_CIRCLE_EXCLAMATION,
-			TRANSLATE_SV("VMManager", "INTC Spin Detection is not enabled, this may reduce performance."));
-	}
+
 	if (!EmuConfig.Cpu.Recompiler.EnableFastmem)
 		append(ICON_FA_CIRCLE_EXCLAMATION, TRANSLATE_SV("VMManager", "Fastmem is not enabled, this will reduce performance."));
 	if (!EmuConfig.Speedhacks.vu1Instant)
