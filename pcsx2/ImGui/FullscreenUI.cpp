@@ -6538,8 +6538,6 @@ void FullscreenUI::DrawAdvancedSettingsPage()
 			"EnableEE", true);
 		DrawToggleSetting(bsi, FSUI_CSTR("Enable EE Cache"), FSUI_CSTR("Enables simulation of the EE's cache. Slow."),
 			"EmuCore/CPU/Recompiler", "EnableEECache", false);
-		DrawToggleSetting(bsi, FSUI_CSTR("Enable INTC Spin Detection"),
-			FSUI_CSTR("Huge speedup for some games, with almost no compatibility side effects."), "EmuCore/Speedhacks", "IntcStat", true);
 		DrawToggleSetting(bsi, FSUI_CSTR("Enable Wait Loop Detection"),
 			FSUI_CSTR("Moderate speedup for some games, with no known side effects."), "EmuCore/Speedhacks", "WaitLoop", true);
 		DrawToggleSetting(bsi, FSUI_CSTR("Enable Fast Memory Access"),
@@ -9519,7 +9517,6 @@ TRANSLATE_NOOP("FullscreenUI", "Enable EE Recompiler");
 TRANSLATE_NOOP("FullscreenUI", "Performs just-in-time binary translation of 64-bit MIPS-IV machine code to native code.");
 TRANSLATE_NOOP("FullscreenUI", "Enable EE Cache");
 TRANSLATE_NOOP("FullscreenUI", "Enables simulation of the EE's cache. Slow.");
-TRANSLATE_NOOP("FullscreenUI", "Enable INTC Spin Detection");
 TRANSLATE_NOOP("FullscreenUI", "Huge speedup for some games, with almost no compatibility side effects.");
 TRANSLATE_NOOP("FullscreenUI", "Enable Wait Loop Detection");
 TRANSLATE_NOOP("FullscreenUI", "Moderate speedup for some games, with no known side effects.");
