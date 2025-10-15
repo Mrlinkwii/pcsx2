@@ -11,14 +11,6 @@
 
 using namespace R5900;
 
-static __fi void IntCHackCheck()
-{
-	// Sanity check: To protect from accidentally "rewinding" the cyclecount
-	// on the few times nextBranchCycle can be behind our current cycle.
-	s32 diff = cpuRegs.nextEventCycle - cpuRegs.cycle;
-	if (diff > 0 && (cpuRegs.cycle - cpuRegs.lastEventCycle) > 8) cpuRegs.cycle = cpuRegs.nextEventCycle;
-}
-
 template< uint page > RETURNS_R128 _hwRead128(u32 mem);
 
 template< uint page, bool intcstathack >
@@ -69,7 +61,7 @@ mem32_t _hwRead32(u32 mem)
 			if (mem == INTC_STAT)
 			{
 				// Disable INTC hack when in PS1 mode as it seems to break games.
-				if (intcstathack && !(psxHu32(HW_ICFG) & (1 << 3))) IntCHackCheck();
+				if (!(psxHu32(HW_ICFG) & (1 << 3)));
 				return psHu32(INTC_STAT);
 			}
 
