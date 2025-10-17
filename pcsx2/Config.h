@@ -1300,25 +1300,24 @@ struct Pcsx2Config
 		EnablePatches : 1, // enables patch detection and application
 		EnableCheats : 1, // enables cheat detection and application
 		EnablePINE : 1, // enables inter-process communication
-		EnableWideScreenPatches : 1,
-		EnableNoInterlacingPatches : 1,
-		EnableFastBoot : 1,
-		EnableFastBootFastForward : 1,
-		EnableThreadPinning : 1,
-		// TODO - Vaser - where are these settings exposed in the Qt UI?
-		EnableRecordingTools : 1,
+		EnableWideScreenPatches : 1, // enables widesceen patches 
+		EnableNoInterlacingPatches : 1, // enables no-interlacing patches 
+		EnableFastBoot : 1, // enables fast-boot 
+		EnableFastBootFastForward : 1, // enables  fastforwad fast-boot 
+		EnableThreadPinning : 1, // enables thread pinning on newer intel machines 
+		EnableRecordingTools : 1, // enables TAS tools 
 		EnableGameFixes : 1, // enables automatic game fixes
 		SaveStateOnShutdown : 1, // default value for saving state on shutdown
 		EnableDiscordPresence : 1, // enables discord rich presence integration
-		UseSavestateSelector : 1,
-		InhibitScreensaver : 1,
+		UseSavestateSelector : 1,  // enables savestate selector 
+		InhibitScreensaver : 1, // enables sceensaver inhibiter 
 		BackupSavestate : 1,
 		McdFolderAutoManage : 1,
-		ManuallySetRealTimeClock : 1,
 
-		HostFs : 1,
-
-		WarnAboutUnsafeSettings : 1;
+		ManuallySetRealTimeClock : 1, // enables manually changing RTC 
+		HostFs : 1, // enable Host filesystem
+		
+		WarnAboutUnsafeSettings : 1; //enables warning about unsafe settings 
 	BITFIELD_END
 
 	CpuOptions Cpu;
