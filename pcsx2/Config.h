@@ -1554,7 +1554,7 @@ namespace EmuFolders
 
 // Change to 1 for console logs of SIF, GPU (PS1 mode) and MDEC (PS1 mode).
 // These do spam a lot though!
-#define PSX_EXTRALOGS 0
+#define PSX_EXTRALOGS 1
 
 #undef BITFIELD32
 #undef BITFIELD_END
